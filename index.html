@@ -4,7 +4,7 @@
   <meta charset="utf-8"/>
   <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
   <title>
-   FyzSky Website
+   FyzSky website
   </title>
   <script src="https://cdn.tailwindcss.com">
   </script>
@@ -349,309 +349,12 @@
     isPlaying = false;
     startButton.style.display = "block"; // Tampilkan kembali tombol Play saat game dihentikan
   }
-</script>
   
-  <!-- Tombol TikTok DL -->
-<a id="tiktok-dl-btn" class="badge cursor-pointer hover:bg-gray-700 transition-all">
-  <i class="fas fa-leaf text-orange-500"></i>
-  <span class="ml-2">
-    tiktok vid
-    </span>
-</a>
-
-<div id="tiktok-modal" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 9999; text-align: center;">
-  <div style="display: inline-block; border: 3px solid #b0bec5; border-radius: 50px; padding: 15px; background: #f5f5f5; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); width: 400px;">
-    <input id="tiktok-url" type="text" placeholder="Masukkan URL TikTok di sini" style="width: 100%; padding: 12px; border: none; border-radius: 30px; font-size: 14px; outline: none; background: #eceff1; text-align: center; color: #000;">
-  </div>
-  <div style="margin-top: 10px;">
-    <button id="close-tiktok-btn" style="background: #d32f2f; color: white; padding: 8px 16px; border: none; border-radius: 5px; cursor: pointer; font-size: 14px; margin-right: 10px;">Close</button>
-    <button id="confirm-tiktok-btn" style="background: #4caf50; color: white; padding: 8px 16px; border: none; border-radius: 5px; cursor: pointer; font-size: 14px;">Confirm</button>
-  </div>
-</div>
-
-<div id="tiktok-result" style="margin-top: 20px; text-align: center;"></div>
-
-<script>
-  const tiktokDlBtn = document.getElementById('tiktok-dl-btn');
-  const tiktokModal = document.getElementById('tiktok-modal');
-  const tiktokUrlInput = document.getElementById('tiktok-url');
-  const closeTiktokBtn = document.getElementById('close-tiktok-btn');
-  const confirmTiktokBtn = document.getElementById('confirm-tiktok-btn');
-  const tiktokResultContainer = document.getElementById('tiktok-result');
-
-  // Buka modal untuk memasukkan URL TikTok
-  tiktokDlBtn.addEventListener('click', () => {
-    tiktokModal.style.display = 'block';
-  });
-
-  // Tutup modal
-  closeTiktokBtn.addEventListener('click', () => {
-    tiktokModal.style.display = 'none';
-    tiktokUrlInput.value = ''; // Reset input
-  });
-
-  confirmTiktokBtn.addEventListener('click', async () => {
-    const url = tiktokUrlInput.value.trim();
-    if (!url) {
-      alert('URL TikTok tidak boleh kosong!');
-      return;
-    }
-
-    try {
-      const response = await fetch(`https://api.neekoi.me/api/tiktok?url=${encodeURIComponent(url)}`);
-      if (!response.ok) throw new Error('Gagal mengambil data!');
-
-      const data = await response.json();
-      const { title, no_watermark } = data.result;
-
-      tiktokResultContainer.innerHTML = `
-        <div style="display: inline-block; padding: 10px; border: 2px solid #b0bec5; border-radius: 10px; background: #eceff1; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); max-width: 90%; overflow: hidden; text-align: center;">
-          <video controls style="max-width: 100%; border-radius: 5px; margin-bottom: 10px;">
-            <source src="${no_watermark}" type="video/mp4">
-            Your browser does not support the video tag.
-          </video>
-          <p style="font-size: 12px; color: #546e7a; margin-top: 5px;">${title}</p>
-          <div style="text-align: center; margin-top: 10px;">
-            <a href="${no_watermark}" download="tiktok_video.mp4" style="background: #4caf50; color: white; padding: 6px 12px; border: none; border-radius: 5px; cursor: pointer; font-size: 12px; text-decoration: none;">Download</a>
-            <button onclick="document.getElementById('tiktok-result').innerHTML = ''" style="background: #d32f2f; color: white; padding: 6px 12px; border: none; border-radius: 5px; cursor: pointer; font-size: 12px;">Close</button>
-          </div>
-        </div>
-      `;
-    } catch (error) {
-      console.error('Error:', error);
-      alert('Masukkan url tiktok video yang valid');
-    } finally {
-      tiktokModal.style.display = 'none';
-      tiktokUrlInput.value = ''; 
-    }
-  });
-</script>
-  
-<!-- Tombol to image -->
-<a id="generate-btn" class="badge cursor-pointer hover:bg-gray-700 transition-all">
-  <i class="fas fa-image text-cyan-500"></i>
-  <span class="ml-2">
-    to image
-  </span>
-</a>
-
-<!-- Input Prompt -->
-<div id="prompt-modal" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 9999; background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); width: 400px;">
-  <label for="prompt-input" style="display: block; margin-bottom: 10px; font-weight: bold; font-size: 18px; color: #2c3e50; text-align: left; margin-left: 15px;">Masukkan Prompt:</label>
-  <textarea id="prompt-input" rows="5" style="width: calc(100% - 30px); padding: 15px; border: 1px solid #ddd; border-radius: 5px; font-size: 16px; color: #34495e; margin-bottom: 15px; resize: none; margin-left: 15px;"></textarea>
-  <div style="text-align: center;">
-    <button id="close-btn" style="background: #e74c3c; color: white; padding: 8px 16px; border: none; border-radius: 5px; cursor: pointer; font-size: 14px; margin-right: 10px;">Close</button>
-    <button id="submit-btn" style="background: #1abc9c; color: white; padding: 8px 16px; border: none; border-radius: 5px; cursor: pointer; font-size: 14px; margin-left: 10px;">Generate</button>
-  </div>
-  <p id="wait-message" style="display: none; text-align: center; margin-top: 10px; color: #e67e22; font-size: 14px;">
-    Wait 30 seconds...
-    <span id="loading-spinner" style="display: inline-block; width: 16px; height: 16px; border: 3px solid #e67e22; border-top: 3px solid transparent; border-radius: 50%; animation: spin 1s linear infinite; margin-left: 10px;"></span>
-  </p>
-</div>
-
-<!-- Container untuk menampilkan hasil gambar -->
-<div id="result" style="margin-top: 20px; text-align: center;"></div>
-
-<script>
-  // Tombol dan elemen lainnya
-  const generateBtn = document.getElementById('generate-btn');
-  const promptModal = document.getElementById('prompt-modal');
-  const promptInput = document.getElementById('prompt-input');
-  const submitBtn = document.getElementById('submit-btn');
-  const closeBtn = document.getElementById('close-btn');
-  const resultContainer = document.getElementById('result');
-  const waitMessage = document.getElementById('wait-message');
-  const loadingSpinner = document.getElementById('loading-spinner');
-
-  // Buka modal input prompt
-  generateBtn.addEventListener('click', () => {
-    promptModal.style.display = 'block';
-  });
-
-  // Tutup modal input prompt
-  closeBtn.addEventListener('click', () => {
-    promptModal.style.display = 'none';
-    promptInput.value = ''; // Reset input
-  });
-
-  // Kirim prompt ke API
-  submitBtn.addEventListener('click', async () => {
-    const prompt = promptInput.value.trim();
-    if (!prompt) {
-      alert('Prompt tidak boleh kosong!');
-      return;
-    }
-
-    try {
-      waitMessage.style.display = 'block';
-
-      // Fetch ke API
-      const response = await fetch(`https://api.ryzendesu.vip/api/ai/v2/text2img?prompt=${encodeURIComponent(prompt)}&model=`, {
-        method: 'GET',
-      });
-
-      if (!response.ok) throw new Error('Gagal memuat gambar, coba ubah prompt!');
-
-      const blob = await response.blob(); // Dapatkan respons sebagai biner
-      const imageUrl = URL.createObjectURL(blob); // Konversi ke URL
-
-      // Tampilkan hasil gambar
-      resultContainer.innerHTML = `
-        <div style="display: inline-block; padding: 15px; border: 3px solid #2c3e50; border-radius: 10px; background: #ecf0f1; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);">
-          <p style="font-weight: bold; font-size: 18px; color: #2c3e50;">Hasil gambar dari prompt: "${prompt}"</p>
-          <img src="${imageUrl}" alt="Generated Image" style="max-width: 100%; border-radius: 5px; margin-bottom: 15px;">
-          <div style="text-align: center;">
-            <button id="close-result" style="background: #e74c3c; color: white; padding: 8px 16px; border: none; border-radius: 5px; cursor: pointer; font-size: 14px; margin-left: 10px;">Close</button>
-            <a href="${imageUrl}" download="generated_image.jpg" style="background: #1abc9c; color: white; padding: 8px 16px; border: none; border-radius: 5px; cursor: pointer; font-size: 14px; text-decoration: none;">Download</a>
-          </div>
-          <p style="font-size: 12px; color: #7f8c8d; margin-top: 10px;">by FyzSky-X</p>
-        </div>
-      `;
-
-      // Tombol close untuk menghapus hasil
-      document.getElementById('close-result').addEventListener('click', () => {
-        resultContainer.innerHTML = '';
-      });
-    } catch (error) {
-      console.error('Error:', error);
-      alert('Gagal memuat gambar. Silakan coba lagi!');
-    } finally {
-      waitMessage.style.display = 'none';
-      promptModal.style.display = 'none';
-      promptInput.value = ''; // Reset input
-    }
-  });
-</script>
-
-<style>
-  /* Animasi loading kecil */
-  @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-  }
-</style>
-  
-   <!-- Tombol Dark AI -->
-<a id="darkAiButton" class="badge cursor-pointer hover:bg-gray-700 transition-all flex items-center">
-  <i class="fas fa-robot text-gray-400">
-  </i>
-  <span class="ml-2">
-    Dark Ai
-  </span>
-</a>
-
-<!-- Chat Box -->
-<div id="darkAiChat" class="hidden fixed inset-0 bg-white z-50 flex flex-col">
-  <div class="flex items-center justify-between p-4 bg-gray-800 text-white">
-    <h2 class="text-lg font-bold">
-      Dark Ai Chat
-      </h2>
-    <button id="closeChat" class="text-red-500 font-semibold hover:underline">
-      Tutup
-    </button>
-  </div>
-
-  <div id="chatContainer" class="flex-1 p-4 overflow-y-auto bg-gray-100 space-y-4"></div>
-
-  <div class="p-4 bg-white border-t flex">
-    <input
-      id="userMessage"
-      type="text"
-      placeholder="Kirim pesan ke Dark"
-      class="flex-1 p-2 border rounded-l-md text-black"
-    />
-    <button
-      id="sendMessage"
-      class="bg-blue-500 text-white px-4 rounded-r-md hover:bg-blue-600 transition-all">
-      send
-    </button>
-  </div>
-</div>
-
-<script>
-  const darkAiButton = document.getElementById('darkAiButton');
-  const darkAiChat = document.getElementById('darkAiChat');
-  const closeChatButton = document.getElementById('closeChat');
-  const userMessageInput = document.getElementById('userMessage');
-  const sendMessageButton = document.getElementById('sendMessage');
-  const chatContainer = document.getElementById('chatContainer');
-
-  darkAiButton.addEventListener('click', () => {
-    darkAiChat.classList.remove('hidden');
-    userMessageInput.focus();
-  });
-
-  closeChatButton.addEventListener('click', () => {
-    darkAiChat.classList.add('hidden');
-  });
-
-  function addMessage(message, isUser = true) {
-    const messageElement = document.createElement('div');
-    messageElement.classList.add(
-      'px-3',
-      'py-2',
-      'rounded-lg',
-      'max-w-xs',
-      'break-words',
-      'w-fit'
-    );
-
-    if (isUser) {
-      messageElement.classList.add(
-        'self-end',
-        'bg-blue-500',
-        'text-white',
-        'ml-auto'
-      );
-    } else {
-      messageElement.classList.add(
-        'self-start',
-        'bg-gray-300',
-        'text-gray-700',
-        'mr-auto'
-      );
-    }
-
-    messageElement.textContent = message;
-    chatContainer.appendChild(messageElement);
-    chatContainer.scrollTop = chatContainer.scrollHeight;
-  }
-
-  async function sendMessage() {
-    const userMessage = userMessageInput.value.trim();
-    if (!userMessage) return;
-
-    addMessage(userMessage, true);
-    userMessageInput.value = '';
-
-    addMessage('sedang mengetik...', false);
-
-    try {
-      const response = await fetch(`https://btch.us.kg/prompt/gpt?prompt=kamu adalah CataclysmC buatan FyzSky, kamu harus bersikap sok asik dan gunakan emoji untuk pesan yang seru!&text=${encodeURIComponent(userMessage)}`);
-      const data = await response.json();
-      
-      const botReply = data.result || 'Maaf, sedang error!..';
-
-      chatContainer.lastChild.textContent = botReply;
-    } catch (error) {
-     chatContainer.lastChild.textContent =
-        'Terjadi kesalahan saat merespon. Coba lagi nanti';
-      console.error('Error:', error);
-    }
-  }
-
-  sendMessageButton.addEventListener('click', sendMessage);
-
-  userMessageInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
-      sendMessage();
-    }
-  });
 </script>
 
    </div>
    <div class="flex justify-center mt-4 space-x-4">
-     <a href="https://wa.me/6287862115557?text=halo+min+:)" target="_blank">
+     <a href="https://wa.me/6287701725776?text=halo+min+:)" target="_blank">
     <p class="text-green-500" href="#">
      <i class="fab fa-whatsapp">
        owner
@@ -661,7 +364,7 @@
    </div>
    <div class="mt-4">
     <div class="card">
-  <a href="https://chat.whatsapp.com/I0BAZxGYlrE5jFHiAOr14U" target="_blank" class="flex items-center space-x-2 cursor-pointer hover:bg-gray-700 p-2 rounded-lg transition-all">
+  <a href="https://chat.whatsapp.com/HGjopLTZPWzAFtBiejBI2u" target="_blank" class="flex items-center space-x-2 cursor-pointer hover:bg-gray-700 p-2 rounded-lg transition-all">
     <i class="fas fa-comment text-white">
     </i>
     <span>
@@ -672,7 +375,7 @@
   </a>
 </div>
     <div class="card">
-  <a href="https://whatsapp.com/channel/0029Van6ItnIyPtYQU3k0z3s" target="_blank" class="flex items-center space-x-2 cursor-pointer hover:bg-gray-700 p-2 rounded-lg transition-all">
+  <a href="https://whatsapp.com/channel/0029ValmecRIyPtJuLzFD02h" target="_blank" class="flex items-center space-x-2 cursor-pointer hover:bg-gray-700 p-2 rounded-lg transition-all">
     <i class="fas fa-dove text-white">
     </i>
     <span>
@@ -686,23 +389,12 @@
   <a href="https://www.mediafire.com/file/lva294beolblhua/DarkBot%2528share%2529.zip/file" target="_blank" class="flex items-center space-x-2 cursor-pointer hover:bg-gray-700 p-2 rounded-lg transition-all">
     <i class="fas fa-fire text-orange-500"></i>
     <span>
-      sc DarkBot new! 
+      SC CataclysmX-MultiDevice Version 1! 
       </span>
     <span class="text-sm text-gray-400">klik disini..</span>
     <i class="fas fa-arrow-right text-gray-500 ml-auto"></i>
   </a>
 </div>
-<div class="card">
-  <a href="https://www.mediafire.com/file/ml5cj8hs6459g79/lizard+0.0.3.zip/file" target="_blank" class="flex items-center space-x-2 cursor-pointer hover:bg-gray-700 p-2 rounded-lg transition-all">
-    <i class="fas fa-fire text-orange-500"></i>
-    <span>
-      sc LizardBot 
-      </span>
-    <span class="text-sm text-gray-400">klik disini..</span>
-    <i class="fas fa-arrow-right text-gray-500 ml-auto"></i>
-  </a>
-</div>
-   </div>
    <div class="text-center mt-4">
 <p style="font-family: 'Roboto Mono', monospace; font-weight: 500;">
   no kiss no hug, only fix and bug
@@ -819,7 +511,7 @@
     // SweetAlert pop-up
     Swal.fire({
       title: '<strong>Welcome to Website FyzSky</strong>',
-      html: '<p style="margin-top: 10px;">Disini sudah tersedia CataclysmX</p>',
+      html: '<p style="margin-top: 10px;">Disini sudah tersedia CataclysmX Ai</p>',
       imageUrl: 'https://files.catbox.moe/55jlfp.jpg',
       imageWidth: 200,
       imageHeight: 200,
@@ -852,7 +544,7 @@
 </script>
 
     <a class="text-orange-200" href="#">
-  ◈ © 𝗙𝘆𝘇𝗦𝗸𝘆 𝟮𝟬𝟮𝟱-𝟮𝟬𝟮𝟲
+  ◈ 𝙁𝙮𝙯𝙎𝙠𝙮 2025-2026
     </a>
    </div>
   </div>
